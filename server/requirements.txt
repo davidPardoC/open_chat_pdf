@@ -1,0 +1,6 @@
+fastapi
+openai
+gpt_index==0.4.24
+PyPDF2
+PyCryptodome
+uvicorn[standard]
