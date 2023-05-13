@@ -9,7 +9,7 @@ start_db()
 app = FastAPI()
 
 
-app.include_router(document.router, prefix="/document")
+app.include_router(document.router, prefix="/documents")
 
 
 @app.get("/api/v1")
