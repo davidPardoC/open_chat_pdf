@@ -5,3 +5,4 @@ PyPDF2
 PyCryptodome
 uvicorn[standard]
 python-multipart
+aiofiles
