@@ -3,13 +3,23 @@ from utils import execute_query, execute_select_query
 import aiofiles
 import os
 
+def check_if_document_exists_in_db(documentPath:str):
+    query = f"SELECT * FROM documents WHERE path = '{documentPath}';"
+    print(query)
+    print(execute_query(query))
 
 async def upload_file(file: UploadFile):
 
     file_name = file.filename
     file_folder_name = file_name.split(".")[0].replace(" ", "")
-    os.mkdir("./uploads/"+file_folder_name)
+    path = f"./uploads/{file_folder_name}"
+
+    if not os.path.exists(path) :
+        os.mkdir(path)
+
     file_location = "./uploads/"+file_folder_name+"/"+file_name
+
+    check_if_document_exists_in_db(file_location)
 
     query = f"insert into documents(path,name) values ('{file_location}','{file_name}')"
 
