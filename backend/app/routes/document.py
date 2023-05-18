@@ -15,3 +15,7 @@ async def create_upload_file(file: UploadFile):
 @router.get("/")
 async def get_docuements():
     return document_controller.get_all_documents();
+
+@router.delete("/")
+def delete_all_documents():
+    return document_controller.delete_all_documents()
