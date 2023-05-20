@@ -18,8 +18,8 @@ def document_exists_in_db(documentPath: str):
 
 async def upload_file(file: UploadFile):
     file_name: str = file.filename
-
-    extension = file_name.split(".")[1]
+    splitedName = file_name.split(".")
+    extension = splitedName[len(splitedName)-1]
 
     if not extension == "pdf":
         return {"error": 400}

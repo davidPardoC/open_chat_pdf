@@ -12,14 +12,14 @@ const LibraryHeader = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
-  }
+  };
 
   return (
     <Flex justifyContent={"flex-end"}>
-      <Button onClick={handleOpenModal}>
+      <Button variant={"primary"} onClick={handleOpenModal}>
         Agregar Documento <AddIcon marginLeft={2} />{" "}
       </Button>
-      {openModal && <UploadFileModal onClose={handleCloseModal}/>}
+      {openModal && <UploadFileModal onClose={handleCloseModal} />}
     </Flex>
   );
 };

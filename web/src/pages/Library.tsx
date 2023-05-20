@@ -1,6 +1,6 @@
-import { AddIcon } from "@chakra-ui/icons";
-import { Button, Container, Flex } from "@chakra-ui/react";
+import { Container } from "@chakra-ui/react";
 import LibraryHeader from "../components/LibraryHeader/LibraryHeader";
+import BooksSection from "../components/BooksSection/BooksSection";
 
 const Library = () => {
   return (
@@ -10,6 +10,7 @@ const Library = () => {
       backgroundColor={"transparent"}
     >
       <LibraryHeader />
+      <BooksSection/>
     </Container>
   );
 };
