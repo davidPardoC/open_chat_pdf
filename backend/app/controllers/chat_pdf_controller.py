@@ -6,10 +6,11 @@ def request_pdf(path: str):
     print("pdf_file", pdf_file, path)
     return pdf_file
 
-
+# TODO: Save pdf raw text in disk so not have to proccess again in each request
 def chat_with_pdf(id: int, message: str, path: str):
     pdf = request_pdf(path)
     pdf_reader = PdfReader(pdf)
-    page = pdf_reader.pages[0].extract_text()
-    print(page)
-    return page
+    pdf_text = ""
+    for page in pdf_reader.pages:
+        pdf_text += f"\n{page.extract_text()}"
+    return pdf_text
