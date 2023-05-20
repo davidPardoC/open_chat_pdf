@@ -10,7 +10,10 @@ type FileCardProps = {
 const truncateName = (name: string) => {
   const splitedName = name.split(".");
   const extension = splitedName[splitedName.length - 1];
-  const truncatedName = splitedName[0].substring(0, 20);
+  const truncatedName =
+    name.length > 15
+      ? `${splitedName[0].substring(0, 15)}[...]`
+      : splitedName[0];
   return `${truncatedName}.${extension}`;
 };
 
