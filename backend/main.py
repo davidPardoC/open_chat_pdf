@@ -1,7 +1,7 @@
 from typing import Union
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from app.routes import document
+from app.routes import document, chat
 from utils import start_db
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -19,11 +19,9 @@ app.add_middleware(
 )
 
 app.include_router(document.router, prefix="/documents")
+app.include_router(chat.router, prefix="/chat")
 
 
-@app.get("/api/v1")
-def read_root():
-    return {"Hello": "World"}
-
-
-app.mount("/", StaticFiles(directory="static"), name="static")
+@app.get("/")
+def health_check():
+    return {"status": "ok"}

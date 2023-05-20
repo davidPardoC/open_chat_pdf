@@ -17,7 +17,7 @@ const truncateName = (name: string) => {
   return `${truncatedName}.${extension}`;
 };
 
-const FileCard = ({ name, id, path }: FileCardProps) => {
+const FileCard = ({ name }: FileCardProps) => {
   if (!name) {
     return null;
   }

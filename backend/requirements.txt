@@ -6,3 +6,6 @@ PyCryptodome
 uvicorn[standard]
 python-multipart
 aiofiles
+python-dotenv
+pypdf2
+langchain
