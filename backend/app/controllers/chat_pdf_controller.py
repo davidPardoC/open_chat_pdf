@@ -1,4 +1,5 @@
 from PyPDF2 import PdfReader
+from langchain.text_splitter import CharacterTextSplitter
 
 
 def request_pdf(path: str):
@@ -13,4 +14,11 @@ def chat_with_pdf(id: int, message: str, path: str):
     pdf_text = ""
     for page in pdf_reader.pages:
         pdf_text += f"\n{page.extract_text()}"
-    return pdf_text
+
+    # split into chunks
+    text_spliter = CharacterTextSplitter(
+        separator="\n", chunk_size=1000, chunk_overlap=200, length_function=len)
+
+    chunks = text_spliter.split_text(pdf_text)
+
+    return chunks

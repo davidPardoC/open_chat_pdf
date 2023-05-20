@@ -1,5 +1,6 @@
 import { Box, Flex, Icon } from "@chakra-ui/react";
 import { BsFiletypePdf } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 type FileCardProps = {
   name: string;
@@ -17,10 +18,16 @@ const truncateName = (name: string) => {
   return `${truncatedName}.${extension}`;
 };
 
-const FileCard = ({ name }: FileCardProps) => {
+const FileCard = ({ name, id }: FileCardProps) => {
   if (!name) {
     return null;
   }
+
+  const navigate = useNavigate();
+
+  const onClickCard = () => {
+    navigate(`/chatbook/${id}`);
+  };
 
   return (
     <Flex
@@ -32,6 +39,7 @@ const FileCard = ({ name }: FileCardProps) => {
       width={"7em"}
       alignItems={"center"}
       justifyContent={"space-between"}
+      onClick={onClickCard}
     >
       <Icon as={BsFiletypePdf} boxSize={"3em"} />
       <Box as="p" textAlign={"center"} marginTop={3}>
