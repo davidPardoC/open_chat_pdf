@@ -27,9 +27,24 @@ documentsRouter.post(
   }
 );
 
-documentsRouter.get("", async (_, res: Response) => {
+documentsRouter.get("", async (_, res: Response, next: NextFunction) => {
   try {
     const docs = await DocumentsController.getAllDocuments();
     res.json(docs);
-  } catch (error) {}
+  } catch (error) {
+    next(error);
+  }
 });
+
+documentsRouter.get(
+  "/:id",
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { id } = req.params;
+      const doc = await DocumentsController.getOneDocument(Number(id));
+      res.json(doc);
+    } catch (error) {
+      next(error);
+    }
+  }
+);

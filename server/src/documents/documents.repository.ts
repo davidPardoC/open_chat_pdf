@@ -15,9 +15,14 @@ const insertOne = async (name: string, path: string) => {
 
 const getOneByPath = async (path: string) => {
   const doc = await prisma.document.findUnique({ where: { path } });
-  return doc
+  return doc;
 };
 
-const DocumentRepository = { getAll, insertOne , getOneByPath };
+const getOneById = async (id: number) => {
+  const doc = await prisma.document.findUnique({ where: { id } });
+  return doc;
+};
+
+const DocumentRepository = { getAll, insertOne, getOneByPath, getOneById };
 
 export default DocumentRepository;

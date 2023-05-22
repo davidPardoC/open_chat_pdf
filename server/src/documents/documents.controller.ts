@@ -4,8 +4,9 @@ import fs from "fs";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Document } from "langchain/document";
 import DocumentRepository from "./documents.repository";
+import { NotFoundExeptions } from "../error/custom.error";
 
-const { insertOne, getAll, getOneByPath } = DocumentRepository;
+const { insertOne, getAll, getOneByPath, getOneById } = DocumentRepository;
 
 const parsePdfDataAndSave = async (dataBuffer: Buffer, path: string) => {
   const pdfReader = await pdf(dataBuffer);
@@ -60,7 +61,6 @@ const uploadDocument = async (file: UploadedFile) => {
     basePath + "/" + fileNameWithoutExtension + "-chunked.json";
   await splitParsedPDFintoChunks(parsedFilePath, toSaveChunksPath);
 
-  
   const documentExists = await documentExisteInDB(savePath);
   if (!documentExists) {
     await saveDocumentToDB(file.name, savePath);
@@ -74,6 +74,14 @@ const getAllDocuments = async () => {
   return docs;
 };
 
-const DocumentsController = { uploadDocument, getAllDocuments };
+const getOneDocument = async (id: number) => {
+  const doc = await getOneById(id);
+  if (!doc){
+    throw NotFoundExeptions()
+  }
+  return doc
+};
+
+const DocumentsController = { uploadDocument, getAllDocuments, getOneDocument };
 
 export default DocumentsController;
