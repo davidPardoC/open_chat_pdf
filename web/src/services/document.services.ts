@@ -14,6 +14,11 @@ const uploadFile = async (formData: FormData) => {
   return data;
 };
 
-const DocumentServices = { getAllDocuments, uploadFile };
+const getDocumentInfo = async (id: string) => {
+  const { data } = await axios.get(`/documents/${id}`);
+  return data;
+};
+
+const DocumentServices = { getAllDocuments, uploadFile, getDocumentInfo };
 
 export default DocumentServices;
