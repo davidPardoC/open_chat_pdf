@@ -40,6 +40,7 @@ const FileCard = ({ name, id }: FileCardProps) => {
       alignItems={"center"}
       justifyContent={"space-between"}
       onClick={onClickCard}
+      _hover={{ cursor: "pointer" }}
     >
       <Icon as={BsFiletypePdf} boxSize={"3em"} />
       <Box as="p" textAlign={"center"} marginTop={3}>

@@ -1,7 +1,8 @@
-import { Heading } from "@chakra-ui/react";
+import { Container, Heading, Skeleton, Stack } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DocumentServices from "../services/document.services";
+import ChatInput from "../components/ChatInput/ChatInput";
 
 const ChatBook = () => {
   const { id } = useParams();
@@ -16,11 +17,26 @@ const ChatBook = () => {
     getDocuementInfo();
   }, []);
 
-  if (!book){
-    return "Loadinf..."
+  if (!book) {
+    return (
+      <Container paddingTop={5}>
+        <Stack>
+          <Skeleton height={"10px"} />
+          <Skeleton height={"10px"} />
+          <Skeleton height={"10px"} />
+        </Stack>
+      </Container>
+    );
   }
 
-  return <Heading color={"white"}>{book.name}</Heading>;
+  return (
+    <Container paddingTop={5}>
+      <Heading size={"lg"} textAlign={"center"} color={"white"}>
+        {book.name}
+      </Heading>
+      <ChatInput />
+    </Container>
+  );
 };
 
 export default ChatBook;

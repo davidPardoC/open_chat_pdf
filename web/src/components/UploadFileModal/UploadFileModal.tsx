@@ -12,11 +12,13 @@ import {
   ModalOverlay,
   chakra,
   Icon,
+  Spinner,
 } from "@chakra-ui/react";
 import { isValidMotionProp, motion } from "framer-motion";
 import React, { useRef, useState } from "react";
 import { BsFiletypePdf } from "react-icons/bs";
 import DocumentServices from "../../services/document.services";
+import useDocumentsStore from "../../stores/documents.store";
 
 type ModalProps = {
   onClose: () => void;
@@ -27,6 +29,8 @@ const ChakraBox = chakra(motion.div, { shouldForwardProp: isValidMotionProp });
 const UploadFileModal = ({ onClose }: ModalProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const { getAndSetDocs } = useDocumentsStore();
 
   const handleChange = function (e: React.ChangeEvent<HTMLInputElement>) {
     e.preventDefault();
@@ -64,8 +68,9 @@ const UploadFileModal = ({ onClose }: ModalProps) => {
     }
     const formData = new FormData();
     formData.append("file", file);
-    const data = await DocumentServices.uploadFile(formData);
-    console.log(data);
+    setIsLoading(true);
+    await DocumentServices.uploadFile(formData);
+    await getAndSetDocs(DocumentServices.getAllDocuments)
     onClose();
   };
 
@@ -149,7 +154,7 @@ const UploadFileModal = ({ onClose }: ModalProps) => {
             Cancel
           </Button>
           <Button marginLeft={4} variant={"primary"} onClick={uploadFile}>
-            Upload
+            {isLoading ? <Spinner color="white" /> : "Upload"}
           </Button>
         </ModalFooter>
       </ModalContent>
