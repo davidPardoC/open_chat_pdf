@@ -8,7 +8,7 @@ const getAllDocuments = async () => {
 };
 
 const uploadFile = async (formData: FormData) => {
-  const data = await axios.post("/documents/uploadfile/", formData, {
+  const data = await axios.post("/documents/", formData, {
     headers: { "Content-Type": "multipart/form-data" },
   });
   return data;
