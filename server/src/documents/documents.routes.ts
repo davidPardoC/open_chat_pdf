@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, Router } from "express";
 import { BadRequestExeption } from "../error/custom.error";
 import { UploadedFile } from "express-fileupload";
-import DocumentsController from "../controllers/documents.controller";
+import DocumentsController from "./documents.controller";
 
 export const documentsRouter = Router();
 
@@ -9,7 +9,6 @@ documentsRouter.post(
   "",
   async (req: Request, res: Response, next: NextFunction) => {
     try {
-        
       const file = req.files?.file as UploadedFile;
       if (!file) {
         throw BadRequestExeption("Please upload a file!");
@@ -21,11 +20,16 @@ documentsRouter.post(
 
       const response = await DocumentsController.uploadDocument(file);
 
-      res.send("ok");
+      res.status(201).json(response);
     } catch (error) {
       next(error);
     }
   }
 );
 
-documentsRouter.get("", () => {});
+documentsRouter.get("", async (_, res: Response) => {
+  try {
+    const docs = await DocumentsController.getAllDocuments();
+    res.json(docs);
+  } catch (error) {}
+});

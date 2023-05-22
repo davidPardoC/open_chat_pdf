@@ -1,0 +1,20 @@
+version: "3.1"
+
+services:
+  local_db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: david
+      POSTGRES_DB: open_pdf
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - local_db
