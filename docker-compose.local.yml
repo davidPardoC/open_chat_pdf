@@ -1,9 +1,0 @@
-version: "3"
-services:
-  adminer:
-    build: ./adminer
-    restart: unless-stopped
-    volumes:
-      - "..:/app:rw"
-    ports:
-      - 8080:8080
