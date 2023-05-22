@@ -31,6 +31,7 @@ const splitParsedPDFintoChunks = async (
   fs.writeFileSync(toSaveChunksPath, JSON.stringify(chunks));
 };
 
+// TODO:save all paths .json .txt
 const saveDocumentToDB = async (name: string, path: string) => {
   await insertOne(name, path);
 };

@@ -1,9 +1,12 @@
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { FaissStore } from "langchain/vectorstores/faiss";
-import { TextLoader } from "langchain/document_loaders/fs/text";
+import { loadQAStuffChain } from "langchain/chains";
 import fs from "fs";
+import "faiss-node";
+import { OpenAI } from "langchain";
 
 const embeddings = new OpenAIEmbeddings();
+const llm = new OpenAI();
 
 const getTextChunks = (filePath: string) => {
   const chunkfilePath =
@@ -26,18 +29,23 @@ const getChunksMetadata = (filePath: string) => {
   ).map(({ metadata }) => ({ ...metadata }));
 };
 
+// TODO:Use TextLoader from langchain to simplify de code
+// TODO: Use db search to not pass path
 const chatWithPdf = async (id: number, message: string, path: string) => {
-  const loader = new TextLoader("./uploads/Caso_2/Caso_2-parsed.txt");
-  const docs = await loader.load();
-  const vectorStore = await FaissStore.fromDocuments(docs, embeddings);
-  vectorStore.similaritySearch(message);
-  return docs;
-  /* const chunks = getTextChunks(path);
-  const chunksMetadata = getChunksMetadata(path)
-  const knoeledgeBase = await FaissStore.fromTexts(chunks, chunksMetadata, embeddings);
-  console.log("Humm")
+  const chunks = getTextChunks(path);
+  const chunksMetadata = getChunksMetadata(path);
+  const knoeledgeBase = await FaissStore.fromTexts(
+    chunks,
+    chunksMetadata,
+    embeddings
+  );
   const docs = await knoeledgeBase.similaritySearch(message);
-  return docs; */
+  const chainA = loadQAStuffChain(llm);
+  const response = await chainA.call({
+    input_documents: docs,
+    question: message,
+  });
+  return response;
 };
 
 const ChatController = { chatWithPdf };
