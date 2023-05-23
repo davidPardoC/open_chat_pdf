@@ -16,7 +16,10 @@ Frontend Technologies
 - Axios
 - ChakraUI
 
-### Local development:
+## Local development:
+
+### Prerequisites:
+- Docker and Docker compose installed.
 
 1. Create a local database:
 ```
