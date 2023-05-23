@@ -1,4 +1,3 @@
-import React from "react";
 import MessageBox from "../MessageBox/MessageBox";
 import { Box } from "@chakra-ui/react";
 
