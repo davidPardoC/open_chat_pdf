@@ -14,16 +14,17 @@ const ChatInput = () => {
     if (!inputRef.current?.value) {
       return;
     }
-    appendNewMessage({ text: inputRef.current?.value as string, sended: true });
-    const message = inputRef.current.value
-    inputRef.current.value = ""
+    appendNewMessage({
+      text: inputRef.current?.value as string,
+      sended: true,
+      bookId: Number(id),
+    });
+    const message = inputRef.current.value;
+    inputRef.current.value = "";
     setChatLoading(true);
-    const data = await ChatService.postChat(
-      Number(id),
-      message
-    );
+    const data = await ChatService.postChat(Number(id), message);
     setChatLoading(false);
-    appendNewMessage({ text: data.text, sended: false });
+    appendNewMessage({ text: data.text, sended: false, bookId: Number(id) });
   };
 
   return (

@@ -12,6 +12,7 @@ const ErrorHandler: ErrorRequestHandler = (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(err)
   const errStatus = err.statusCode || 500;
   const errMsg = err.message || "Something went wrong";
   res.status(errStatus).json({

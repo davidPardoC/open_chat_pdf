@@ -11,10 +11,11 @@ const insertOne = async (
   name: string,
   path: string,
   text_parsed_path: string,
-  vectorsPath: string
+  vectorsPath: string,
+  chunks_path: string
 ) => {
   const doc = await prisma.document.create({
-    data: { name, path, text_parsed_path, vector_directory: vectorsPath },
+    data: { name, path, text_parsed_path, vector_directory: vectorsPath, chunks_path },
   });
   return doc;
 };

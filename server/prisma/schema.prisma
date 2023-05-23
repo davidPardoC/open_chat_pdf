@@ -16,4 +16,5 @@ model Document {
   name             String
   text_parsed_path String
   vector_directory String
+  chunks_path      String
 }

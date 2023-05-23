@@ -2,9 +2,11 @@ import { useEffect, useRef } from "react";
 import useChatStore from "../../stores/messages.stores";
 import MessageBox from "../MessageBox/MessageBox";
 import { Box } from "@chakra-ui/react";
+import { useParams } from "react-router-dom";
 
 const MessagesContainer = () => {
   const { messages, isLoadingChat } = useChatStore();
+  const { id } = useParams();
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -33,9 +35,11 @@ const MessagesContainer = () => {
       }}
       ref={divRef}
     >
-      {messages.map((message, idx) => (
-        <MessageBox {...message} key={idx} />
-      ))}
+      {messages
+        .filter((message) => message.bookId == id)
+        .map((message, idx) => (
+          <MessageBox {...message} key={idx} />
+        ))}
       {isLoadingChat && <MessageBox isLoading sended={false} />}
     </Box>
   );

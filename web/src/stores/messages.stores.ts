@@ -4,6 +4,7 @@ export type Message = {
   text?: string;
   isLoading?: boolean;
   sended: boolean;
+  bookId?: number
 };
 
 interface MessageStoreInteface {

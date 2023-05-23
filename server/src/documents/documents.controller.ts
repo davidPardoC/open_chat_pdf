@@ -5,11 +5,6 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Document } from "langchain/document";
 import DocumentRepository from "./documents.repository";
 import { NotFoundExeptions } from "../error/custom.error";
-import { FaissStore } from "langchain/vectorstores/faiss";
-import { OpenAIEmbeddings } from "langchain/embeddings/openai";
-import { TextLoader } from "langchain/document_loaders/fs/text";
-
-const embeddings = new OpenAIEmbeddings();
 
 const parsePdfDataAndSave = async (dataBuffer: Buffer, path: string) => {
   const pdfReader = await pdf(dataBuffer);
@@ -39,29 +34,21 @@ const saveDocumentToDB = async (
   name: string,
   path: string,
   textFileParsed: string,
-  vectorsPath: string
+  vectorsPath: string,
+  chunksPath: string
 ) => {
   return await DocumentRepository.insertOne(
     name,
     path,
     textFileParsed,
-    vectorsPath
+    vectorsPath,
+    chunksPath
   );
 };
 
 const documentExisteInDB = async (path: string) => {
   const doc = await DocumentRepository.getOneByPath(path);
   return !!doc;
-};
-
-const saveVectorStore = async (
-  parsedTextFilePath: string,
-  vectorDirectory: string
-) => {
-  const loader = new TextLoader(parsedTextFilePath);
-  const docs = await loader.load();
-  const vectorStore = await FaissStore.fromDocuments(docs, embeddings);
-  await vectorStore.save(vectorDirectory)
 };
 
 const uploadDocument = async (file: UploadedFile) => {
@@ -93,12 +80,9 @@ const uploadDocument = async (file: UploadedFile) => {
       file.name,
       savePath,
       parsedFilePath,
-      vectorPath
+      vectorPath,
+      toSaveChunksPath
     );
-  }
-
-  if (doc) {
-    await saveVectorStore(doc.text_parsed_path, doc.vector_directory);
   }
 
   return { message: "File uploaded succesfully!", doc };
