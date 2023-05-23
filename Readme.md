@@ -1,4 +1,4 @@
-# Open source chat pdf
+# Open Source Chat Pdf
 
 Powered by OpenIA and Langchain
 
