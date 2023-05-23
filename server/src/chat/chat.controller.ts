@@ -35,6 +35,7 @@ const chatWithPdf = async (id: number, message: string) => {
 
   const chunks = getTextChunks(doc.chunks_path);
   const chunksMetadata = getChunksMetadata(doc.chunks_path);
+  // TODO: maybe use RedisVectorStore to improve performance
   const knoeledgeBase = await FaissStore.fromTexts(
     chunks,
     chunksMetadata,
