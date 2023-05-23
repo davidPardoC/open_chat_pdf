@@ -11,7 +11,9 @@ datasource db {
 }
 
 model Document {
-  id   Int    @id @default(autoincrement())
-  path String @unique
-  name String
+  id               Int    @id @default(autoincrement())
+  path             String @unique
+  name             String
+  text_parsed_path String
+  vector_directory String
 }

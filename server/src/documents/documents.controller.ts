@@ -5,8 +5,11 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";
 import { Document } from "langchain/document";
 import DocumentRepository from "./documents.repository";
 import { NotFoundExeptions } from "../error/custom.error";
+import { FaissStore } from "langchain/vectorstores/faiss";
+import { OpenAIEmbeddings } from "langchain/embeddings/openai";
+import { TextLoader } from "langchain/document_loaders/fs/text";
 
-const { insertOne, getAll, getOneByPath, getOneById } = DocumentRepository;
+const embeddings = new OpenAIEmbeddings();
 
 const parsePdfDataAndSave = async (dataBuffer: Buffer, path: string) => {
   const pdfReader = await pdf(dataBuffer);
@@ -32,14 +35,33 @@ const splitParsedPDFintoChunks = async (
   fs.writeFileSync(toSaveChunksPath, JSON.stringify(chunks));
 };
 
-// TODO:save all paths .json .txt
-const saveDocumentToDB = async (name: string, path: string) => {
-  await insertOne(name, path);
+const saveDocumentToDB = async (
+  name: string,
+  path: string,
+  textFileParsed: string,
+  vectorsPath: string
+) => {
+  return await DocumentRepository.insertOne(
+    name,
+    path,
+    textFileParsed,
+    vectorsPath
+  );
 };
 
 const documentExisteInDB = async (path: string) => {
-  const doc = await getOneByPath(path);
+  const doc = await DocumentRepository.getOneByPath(path);
   return !!doc;
+};
+
+const saveVectorStore = async (
+  parsedTextFilePath: string,
+  vectorDirectory: string
+) => {
+  const loader = new TextLoader(parsedTextFilePath);
+  const docs = await loader.load();
+  const vectorStore = await FaissStore.fromDocuments(docs, embeddings);
+  await vectorStore.save(vectorDirectory)
 };
 
 const uploadDocument = async (file: UploadedFile) => {
@@ -61,25 +83,38 @@ const uploadDocument = async (file: UploadedFile) => {
     basePath + "/" + fileNameWithoutExtension + "-chunked.json";
   await splitParsedPDFintoChunks(parsedFilePath, toSaveChunksPath);
 
+  const vectorPath = `./vectors/${fileNameWithoutExtension}/`;
+
   const documentExists = await documentExisteInDB(savePath);
+
+  let doc;
   if (!documentExists) {
-    await saveDocumentToDB(file.name, savePath);
+    doc = await saveDocumentToDB(
+      file.name,
+      savePath,
+      parsedFilePath,
+      vectorPath
+    );
   }
 
-  return { message: "File uploaded succesfully!" };
+  if (doc) {
+    await saveVectorStore(doc.text_parsed_path, doc.vector_directory);
+  }
+
+  return { message: "File uploaded succesfully!", doc };
 };
 
 const getAllDocuments = async () => {
-  const docs = await getAll();
+  const docs = await DocumentRepository.getAll();
   return docs;
 };
 
 const getOneDocument = async (id: number) => {
-  const doc = await getOneById(id);
-  if (!doc){
-    throw NotFoundExeptions()
+  const doc = await DocumentRepository.getOneById(id);
+  if (!doc) {
+    throw NotFoundExeptions();
   }
-  return doc
+  return doc;
 };
 
 const DocumentsController = { uploadDocument, getAllDocuments, getOneDocument };

@@ -31,7 +31,12 @@ const ChatBook = () => {
   }
 
   return (
-    <Container paddingTop={5} minHeight={"100vh"} position={"relative"} maxW={"container.md"}>
+    <Container
+      paddingTop={5}
+      minHeight={"100vh"}
+      position={"relative"}
+      maxW={"container.md"}
+    >
       <Heading size={"lg"} textAlign={"center"} color={"white"}>
         {book.name}
       </Heading>

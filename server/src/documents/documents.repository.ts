@@ -7,10 +7,16 @@ const getAll = async () => {
   return allUsers;
 };
 
-const insertOne = async (name: string, path: string) => {
-  await prisma.document.create({
-    data: { name, path },
+const insertOne = async (
+  name: string,
+  path: string,
+  text_parsed_path: string,
+  vectorsPath: string
+) => {
+  const doc = await prisma.document.create({
+    data: { name, path, text_parsed_path, vector_directory: vectorsPath },
   });
+  return doc;
 };
 
 const getOneByPath = async (path: string) => {

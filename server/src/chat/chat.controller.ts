@@ -1,51 +1,28 @@
 import { OpenAIEmbeddings } from "langchain/embeddings/openai";
 import { FaissStore } from "langchain/vectorstores/faiss";
 import { loadQAStuffChain } from "langchain/chains";
-import fs from "fs";
 import "faiss-node";
-import { OpenAI } from "langchain";
+import { OpenAI } from "langchain/llms/openai";
+import DocumentRepository from "../documents/documents.repository";
+import { NotFoundExeptions } from "../error/custom.error";
 
 const embeddings = new OpenAIEmbeddings();
 const llm = new OpenAI();
 
-const getTextChunks = (filePath: string) => {
-  const chunkfilePath =
-    filePath.slice(0, -4).replace(/ /g, "_") + "-chunked.json";
-  const file = fs.readFileSync(chunkfilePath).toString();
-  return (JSON.parse(file) as { pageContent: string }[]).map(
-    ({ pageContent }) => pageContent
-  );
-};
+const chatWithPdf = async (id: number, message: string) => {
+  const doc = await DocumentRepository.getOneById(id);
+  if (!doc) {
+    throw NotFoundExeptions();
+  }
 
-const getChunksMetadata = (filePath: string) => {
-  const chunkfilePath =
-    filePath.slice(0, -4).replace(/ /g, "_") + "-chunked.json";
-  const file = fs.readFileSync(chunkfilePath).toString();
-  return (
-    JSON.parse(file) as {
-      pageContent: string;
-      metadata: { [key: string]: any };
-    }[]
-  ).map(({ metadata }) => ({ ...metadata }));
-};
-
-// TODO:Use TextLoader from langchain to simplify de code
-// TODO: Use db search to not pass path
-const chatWithPdf = async (id: number, message: string, path: string) => {
-  const chunks = getTextChunks(path);
-  const chunksMetadata = getChunksMetadata(path);
-  const knoeledgeBase = await FaissStore.fromTexts(
-    chunks,
-    chunksMetadata,
-    embeddings
-  );
-  const docs = await knoeledgeBase.similaritySearch(message);
+  const vectorStore = await FaissStore.load(doc.vector_directory, embeddings);
+  const similarity = await vectorStore.similaritySearch(message);
   const chainA = loadQAStuffChain(llm);
   const response = await chainA.call({
-    input_documents: docs,
+    input_documents: similarity,
     question: message,
   });
-  return response;
+  return { ...response };
 };
 
 const ChatController = { chatWithPdf };

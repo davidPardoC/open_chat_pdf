@@ -1,7 +1,10 @@
+import useChatStore from "../../stores/messages.stores";
 import MessageBox from "../MessageBox/MessageBox";
 import { Box } from "@chakra-ui/react";
 
 const MessagesContainer = () => {
+  const { messages } = useChatStore();
+
   return (
     <Box
       maxHeight={"88vh"}
@@ -20,27 +23,9 @@ const MessagesContainer = () => {
         },
       }}
     >
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
-      <MessageBox />
-      <MessageBox sended />
+      {messages.map((_, idx) => (
+        <MessageBox sended={idx % 2 == 0} />
+      ))}
     </Box>
   );
 };
