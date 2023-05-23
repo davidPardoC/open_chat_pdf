@@ -19,7 +19,7 @@ const getDocs = async (service: () => Promise<Doc[]>) => {
   return docs;
 };
 
-const useDocumentsStore = create<StoreInterface>((set, get) => ({
+const useDocumentsStore = create<StoreInterface>((set) => ({
   docs: [],
   setAllDocs: (docs: Doc[]) => set((state) => setAllDocs(state, docs)),
   getAndSetDocs: async (service: () => Promise<Doc[]>) => {
