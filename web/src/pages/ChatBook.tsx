@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import DocumentServices from "../services/document.services";
 import ChatInput from "../components/ChatInput/ChatInput";
+import MessagesContainer from "../components/MessagesContainer/MessagesContainer";
 
 const ChatBook = () => {
   const { id } = useParams();
@@ -30,10 +31,11 @@ const ChatBook = () => {
   }
 
   return (
-    <Container paddingTop={5}>
+    <Container paddingTop={5} minHeight={"100vh"} position={"relative"} maxW={"container.md"}>
       <Heading size={"lg"} textAlign={"center"} color={"white"}>
         {book.name}
       </Heading>
+      <MessagesContainer />
       <ChatInput />
     </Container>
   );
