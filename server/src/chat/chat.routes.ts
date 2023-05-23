@@ -30,5 +30,5 @@ chatRouter.post(
 chatRouter.post("/mock-chat", (req: Request, res: Response) => {
   setTimeout(() => {
     res.json({ text: req.body.message });
-  }, 1000);
+  }, 2000);
 });

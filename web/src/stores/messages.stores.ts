@@ -1,7 +1,30 @@
 import { create } from "zustand";
 
-const useChatStore = create<{messages:any[]}>((set) => ({
-  messages: ["1", "2", "3", , 5, 6, 7, 8],
+export type Message = {
+  text?: string;
+  isLoading?: boolean;
+  sended: boolean;
+};
+
+interface MessageStoreInteface {
+  messages: Message[];
+  isLoadingChat: boolean;
+  appendNewMessage: (message: Message) => void;
+  setChatLoading: (value: boolean) => void;
+}
+
+const useChatStore = create<MessageStoreInteface>((set, get) => ({
+  messages: [],
+  isLoadingChat: false,
+  appendNewMessage: (message: Message) =>
+    set((state) => {
+      const messages = [...get().messages, message];
+      return { ...state, messages };
+    }),
+  setChatLoading: (value: boolean) =>
+    set((state) => {
+      return { ...state, isLoadingChat: value };
+    }),
 }));
 
 export default useChatStore;
