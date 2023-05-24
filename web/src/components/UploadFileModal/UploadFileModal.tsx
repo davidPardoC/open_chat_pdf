@@ -70,7 +70,7 @@ const UploadFileModal = ({ onClose }: ModalProps) => {
     formData.append("file", file);
     setIsLoading(true);
     await DocumentServices.uploadFile(formData);
-    await getAndSetDocs(DocumentServices.getAllDocuments)
+    await getAndSetDocs(DocumentServices.getAllDocuments);
     onClose();
   };
 
@@ -158,7 +158,6 @@ const UploadFileModal = ({ onClose }: ModalProps) => {
           </Button>
         </ModalFooter>
       </ModalContent>
-      F
     </Modal>
   );
 };

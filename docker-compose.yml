@@ -1,8 +1,21 @@
 version: "3"
 services:
+  database:
+    image: postgres
+    container_name: postgres_db
+    hostname: postgres_db
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_USER: david
+      POSTGRES_DB: open_pdf
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
   open_chat_pdf:
     env_file:
-      - .env
+      - server/.env
     build: .
     ports:
       - 8000:8000
@@ -10,13 +23,5 @@ services:
       - database
     links:
       - "database:database"
-  database:
-    image: postgres
-    container_name: postgres_db
-    restart: always
-    environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mypassword
-    volumes:
-      - local_pgdata:/var/lib/postgresql/data
+volumes:
+  local_pgdata:

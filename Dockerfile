@@ -3,7 +3,7 @@ WORKDIR /server
 COPY  /server/package*.json ./
 RUN npm ci
 COPY ./server ./
-RUN npx prisma migrate dev --name init
+RUN npx prisma generate
 RUN npm run build
 WORKDIR /web
 COPY  /web/package*.json ./
