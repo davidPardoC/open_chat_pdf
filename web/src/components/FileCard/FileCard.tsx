@@ -26,7 +26,7 @@ const FileCard = ({ name, id }: FileCardProps) => {
   const navigate = useNavigate();
 
   const onClickCard = () => {
-    navigate(`/chatbook/${id}`);
+    navigate(`/book/${id}`);
   };
 
   return (

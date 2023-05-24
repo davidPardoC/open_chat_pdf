@@ -3,7 +3,7 @@ import Library from "./pages/Library";
 import ChatBook from "./pages/ChatBook";
 const router = createBrowserRouter([
   { path: "/", element: <Library /> },
-  { path: "/chatbook/:id", element: <ChatBook /> },
+  { path: "/book/:id", element: <ChatBook /> },
 ]);
 
 function App() {
