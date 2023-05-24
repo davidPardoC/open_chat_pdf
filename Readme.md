@@ -40,3 +40,7 @@ npm i
 npm run develop
 ```
 4. Start Coding !
+
+## TODO:
+
+- Docker Compose Automagic Setup
