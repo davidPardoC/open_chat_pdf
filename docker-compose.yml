@@ -1,9 +1,22 @@
 version: "3"
 services:
-  adminer:
-    build: ./adminer
-    restart: unless-stopped
-    volumes:
-      - "..:/app:rw"
+  open_chat_pdf:
+    env_file:
+      - .env
+    build: .
     ports:
-      - 8080:8080
+      - 8000:8000
+    depends_on:
+      - database
+    links:
+      - "database:database"
+  database:
+    image: postgres
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: myuser
+      POSTGRES_PASSWORD: mypassword
+      POSTGRES_DB: mypassword
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
