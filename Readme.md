@@ -41,6 +41,18 @@ npm run develop
 ```
 4. Start Coding !
 
+Every PR is welcome!
+
+## One line start with docker-compose:
+
+1. Crate a .env:
+```
+cp ./server/.env.example ./server/.env
+```
+2. Replace `SAMPLE_KEY` with your OpenAI key.
+3. Run `docker-compose up`
+
+
 ## TODO:
 
-- Docker Compose Automagic Setup
+- Maybe use Redis vector store to improve performance

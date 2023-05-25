@@ -1,14 +1,16 @@
 FROM node:18.16.0
-WORKDIR /server
+WORKDIR /usr/src/server
 COPY  /server/package*.json ./
 RUN npm ci
 COPY ./server ./
 RUN npx prisma generate
 RUN npm run build
-WORKDIR /web
+VOLUME [ "/uploads" ]
+WORKDIR /usr/src/web
 COPY  /web/package*.json ./
 RUN npm ci
 COPY ./web ./
+RUN npm run build
 EXPOSE 8000
-WORKDIR /server
-CMD [ "node", "./dist/server.js" ]
+WORKDIR /usr/src/server
+CMD [ "npm","run","start:migrate:prod" ]

@@ -8,7 +8,9 @@
     "tsc": "tsc",
     "dev": "NODE_OPTIONS='--experimental-fetch' NODE_ENV=development ts-node-dev --exit-child ./src/server.ts",
     "build": "tsc",
-    "start": "node ./dist/server.js"
+    "start": "node ./dist/server.js",
+    "start:migrate:prod": "prisma migrate deploy && npm start"
+    
   },
   "keywords": [],
   "author": "",

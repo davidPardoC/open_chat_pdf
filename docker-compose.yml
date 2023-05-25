@@ -2,17 +2,22 @@ version: "3"
 services:
   database:
     image: postgres
-    container_name: postgres_db
-    hostname: postgres_db
     restart: always
     ports:
       - 5432:5432
     environment:
       POSTGRES_PASSWORD: mypassword
-      POSTGRES_USER: david
+      POSTGRES_USER: postgres_user
       POSTGRES_DB: open_pdf
     volumes:
-      - local_pgdata:/var/lib/postgresql/data
+      - pg_data:/var/lib/postgresql/data
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+    links:
+      - database
   open_chat_pdf:
     env_file:
       - server/.env
@@ -22,6 +27,8 @@ services:
     depends_on:
       - database
     links:
-      - "database:database"
+      - database
+    volumes:
+      - ./uploads:/server/uploads
 volumes:
-  local_pgdata:
+  pg_data:
