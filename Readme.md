@@ -2,6 +2,8 @@
 
 Powered by OpenIA and Langchain
 
+![example](https://github.com/davidPardoC/open_chat_pdf/blob/main/example.gif?raw=true)
+
 Backend technologies:
 - Node.js
 - Typescript
