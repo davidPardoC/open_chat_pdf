@@ -17,7 +17,7 @@ const LibraryHeader = () => {
   return (
     <Flex justifyContent={"flex-end"}>
       <Button variant={"primary"} onClick={handleOpenModal}>
-        Agregar Documento <AddIcon marginLeft={2} />{" "}
+        Add Document <AddIcon marginLeft={2} />{" "}
       </Button>
       {openModal && <UploadFileModal onClose={handleCloseModal} />}
     </Flex>
